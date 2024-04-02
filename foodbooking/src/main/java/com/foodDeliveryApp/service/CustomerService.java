@@ -1,6 +1,6 @@
 package com.foodDeliveryApp.service;
 
-import java.util.Optional;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,27 +12,42 @@ import com.foodDeliveryApp.repository.CustomerRepository;
 
 public final class CustomerService {
     @Autowired
-    private  final CustomerRepository repository;
+    private CustomerRepository customerRepository;
     //Service constructor
-    public CustomerService(CustomerRepository repository) {
-        this.repository = repository;
+    public CustomerService(CustomerRepository customerRepository) {
+        this.customerRepository = customerRepository;
     }
     //Service used to register a customer or update a customer
-    public <S extends Customer> S save(final S entity) {
-        return repository.save(entity);
+    public Customer addCustomer(Customer customer) {
+        return customerRepository.save(customer);
     }
     //Service used to find a customer based on his/her id
-    public Optional<Customer> findById(final Long aLong){
-        return repository.findById(aLong);
+    public Customer getCustomerById(final Long aLong){
+        Optional<Customer> customer=customerRepository.findById(aLong);
+        return customer.orElse(null);
     }
     //Service used to find all the customers registered in the application
-    public Iterable<Customer> findAll(){
-        return repository.findAll();
+
+    public List<Customer> getAllCustomers(){
+        return (List<Customer>) customerRepository.findAll();
     }
+    //Service to update details of the customer
+    public Customer updateCustomer(Customer customer){
+        Optional<Customer> optionalCustomer=customerRepository.findById(customer.getId());
+        if(optionalCustomer.isPresent()){
+            return customerRepository.save(customer);
+        }else{
+            return null;
+        }
+    }
+
     //Service used to delete customer details based on his/her id
     
     public void deleteById(final Long aId){
-        repository.deleteById(aId);
+        Optional<Customer> optionalCustomer=customerRepository.findById(aId);
+        if(optionalCustomer.isPresent()){
+            customerRepository.deleteById(aId);
+        }
     }
 
 }
