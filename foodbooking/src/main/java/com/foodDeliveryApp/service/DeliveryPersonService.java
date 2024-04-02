@@ -1,7 +1,9 @@
 package com.foodDeliveryApp.service;
 
+import java.util.List;
 import java.util.Optional;
 
+//import org.hibernate.mapping.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,21 +20,37 @@ public final class DeliveryPersonService {
         this.repository = repository;
     }
     //Service used to register a DELIVERY Person or update a delivery person
-    public <S extends DeliveryPerson> S save(final S entity) {
-        return repository.save(entity);
+    public DeliveryPerson addDeliveryPerson(DeliveryPerson deliveryPerson) {
+        return repository.save(deliveryPerson);
     }
     //Service used to find a deliveryPerson based on his/her id
-    public Optional<DeliveryPerson> findById(final Long aLong){
-        return repository.findById(aLong);
+    public DeliveryPerson getDeliveryPersonById(final Long aLong){
+        Optional<DeliveryPerson> deliveryPerson = repository.findById(aLong);
+        return deliveryPerson.orElse(null);
     }
     //Service used to find all the deliveryPerson registered in the application
-    public Iterable<DeliveryPerson> findAll(){
-        return repository.findAll();
+    public List<DeliveryPerson> getAllDeliveryPersons(){
+        return (List<DeliveryPerson>) repository.findAll();
+    }
+
+    //Service to update details of the deliveryPerson
+    public DeliveryPerson updateDeliveryPerson(DeliveryPerson deliveryPerson){
+        Optional<DeliveryPerson> optionalDeliveryPerson = repository.findById(deliveryPerson.getId());
+        if(optionalDeliveryPerson.isPresent()){
+            return repository.save(deliveryPerson);
+        }else{
+            return null;
+        }
+
     }
     //Service used to delete deliveryPerson details based on his/her id
     
     public void deleteById(final Long aId){
-        repository.deleteById(aId);
+        Optional<DeliveryPerson> optionalDeliveryPerson = repository.findById(aId);
+        if(optionalDeliveryPerson.isPresent()){
+
+            repository.deleteById(aId);
+        }
     }
 
 }

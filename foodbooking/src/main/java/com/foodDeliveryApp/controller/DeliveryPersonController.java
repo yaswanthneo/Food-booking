@@ -1,7 +1,10 @@
 package com.foodDeliveryApp.controller;
 
-import java.util.Optional;
+import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,8 +24,9 @@ import com.foodDeliveryApp.service.DeliveryPersonService;
 @RequestMapping("/api/delivery")
 
 public class DeliveryPersonController {
+    @Autowired
     private final DeliveryPersonService deliveryService;
-   // private DeliveryPersonService deliveryService;
+
     //Controller constructor
     public DeliveryPersonController(DeliveryPersonService deliveryService) {
         this.deliveryService = deliveryService;
@@ -31,37 +35,50 @@ public class DeliveryPersonController {
     @PostMapping
     @Secured("ROLE_DELIVERYPERSON")
     //Register the deliveryPerson details 
-    public DeliveryPerson saveDeliveryPerson(@RequestBody DeliveryPerson delivery) {
-        return deliveryService.save(delivery);
+    public ResponseEntity<DeliveryPerson> addDeliveryPerson(@RequestBody DeliveryPerson deliveryPerson) {
+        DeliveryPerson createdDeliveryPerson = deliveryService.addDeliveryPerson(deliveryPerson);
+        return new ResponseEntity<DeliveryPerson>(createdDeliveryPerson, HttpStatus.CREATED);
     }
 
     @GetMapping
     @Secured("ROLE_ADMIN")
     //Get all the deliveryPersons registered in the application
-    public Iterable<DeliveryPerson> getAllDeliveryPersons() {
-        return deliveryService.findAll();
+    public ResponseEntity<List<DeliveryPerson>> getAllDeliveryPersons(){
+        return new  ResponseEntity<>(deliveryService.getAllDeliveryPersons(), HttpStatus.FOUND);
     }
 
     @GetMapping("/{id}")
     @Secured({"ROLE_ADMIN", "ROLE_DELIVERYPERSON"})
     //Get a deliveryperson registered in the application based on his/her id
-    public Optional<DeliveryPerson> getDeliveryPersonById(@PathVariable Long id) {
-        return deliveryService.findById(id);
+    public ResponseEntity<DeliveryPerson> getDeliveryPersonById(@PathVariable Long id) {
+        DeliveryPerson deliveryPerson = deliveryService.getDeliveryPersonById(id);
+        if(deliveryPerson != null){
+            return new ResponseEntity<>(deliveryPerson, HttpStatus.FOUND);
+        }else{
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
     
     @PutMapping("/{id}")
     @Secured("ROLE_DELIVERYPERSON")
     //Update the deliveryPerson details
-    public DeliveryPerson updatedDeliveryPerson(@PathVariable Long id, @RequestBody DeliveryPerson deliveryPerson) {
+    public ResponseEntity<DeliveryPerson> updatedDeliveryPerson(@PathVariable Long id, @RequestBody DeliveryPerson deliveryPerson) {
         deliveryPerson.setId(id);
-        return deliveryService.save(deliveryPerson);
+        DeliveryPerson updatedCustomer = deliveryService.updateDeliveryPerson(deliveryPerson);
+        if(updatedCustomer != null){
+            return new ResponseEntity<>(updatedCustomer, HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
     }
 
     @DeleteMapping("/{id}")
     @Secured({"ROLE_ADMIN", "ROLE_DELIVERYPERSON"})
     //Delete a deliveryPerson details based on his/her id
-    public void deleteDeliveryPerson(@PathVariable("id") Long id) {
+    public ResponseEntity<Void> deleteDeliveryPerson(@PathVariable("id") Long id) {
         deliveryService.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 
