@@ -1,14 +1,12 @@
 package com.foodDeliveryApp.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-
 import org.springframework.stereotype.Repository;
 
-import com.foodDeliveryApp.model.Customer;;
+import com.foodDeliveryApp.model.Cart;
 
 @Repository
 
-public interface CustomerRepository extends  JpaRepository<Customer, Long> {
+public interface CartRepository extends JpaRepository<Cart,Long>{
     
 }
-
