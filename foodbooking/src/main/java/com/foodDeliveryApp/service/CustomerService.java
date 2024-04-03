@@ -18,6 +18,7 @@ public final class CustomerService {
         this.customerRepository = customerRepository;
     }
     //Service used to register a customer or update a customer
+    @SuppressWarnings("null")
     public Customer addCustomer(Customer customer) {
         return customerRepository.save(customer);
     }
@@ -33,7 +34,7 @@ public final class CustomerService {
     }
     //Service to update details of the customer
     public Customer updateCustomer(Customer customer){
-        Optional<Customer> optionalCustomer=customerRepository.findById(customer.getId());
+        Optional<Customer> optionalCustomer=customerRepository.findById(customer.getCustomerId());
         if(optionalCustomer.isPresent()){
             return customerRepository.save(customer);
         }else{

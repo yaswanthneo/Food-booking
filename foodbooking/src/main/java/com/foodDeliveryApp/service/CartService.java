@@ -21,7 +21,8 @@ public class CartService {
         this.cartRepository = cartRepository;
     }
     //Service used to add an item to the cart
-    public Cart addCart(Cart cart) {
+    @SuppressWarnings("null")
+	public Cart addCart(Cart cart) {
         return cartRepository.save(cart);
     }
     //Service used to view details of an item in the cart
@@ -36,7 +37,7 @@ public class CartService {
     }
     //Service to update items in cart(Quantity)
     public Cart updateCart(Cart cart){
-        Optional<Cart> optionalCart=cartRepository.findById(cart.getId());
+        Optional<Cart> optionalCart=cartRepository.findById(cart.getCartId());
         if(optionalCart.isPresent()){
             return cartRepository.save(cart);
         }else{

@@ -66,7 +66,7 @@ public class CartController {
     @Secured("ROLE_CUSTOMER")
     //Update the item details(Quantity)
     public ResponseEntity<Cart> updateCart(@PathVariable Long id, @RequestBody Cart cart) {
-        cart.setId(id);
+        cart.setCartId(id);
         Cart updatedCart=cartService.updateCart(cart);
         if(updatedCart!=null){
             return new ResponseEntity<>(updatedCart, HttpStatus.OK);

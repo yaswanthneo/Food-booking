@@ -10,38 +10,20 @@ import jakarta.persistence.Id;
 public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private long cartId;
 
-    private long customerId;
-    private long restaurantId;
-    private long itemId;
     private String itemName;
     private Integer itemQuantity;
     private double itemPrice;
     private double totalPrice;
-    public long getId() {
-        return id;
+    private long customerId;
+    private long restaurantId;
+    private long itemId;
+    public long getCartId() {
+        return cartId;
     }
-    public void setId(long id) {
-        this.id = id;
-    }
-    public long getCustomerId() {
-        return customerId;
-    }
-    public void setCustomerId(long customerId) {
-        this.customerId = customerId;
-    }
-    public long getRestaurantId() {
-        return restaurantId;
-    }
-    public void setRestaurantId(long restaurantId) {
-        this.restaurantId = restaurantId;
-    }
-    public long getItemId() {
-        return itemId;
-    }
-    public void setItemId(long itemId) {
-        this.itemId = itemId;
+    public void setCartId(long cartId) {
+        this.cartId = cartId;
     }
     public String getItemName() {
         return itemName;
@@ -67,4 +49,26 @@ public class Cart {
     public void setTotalPrice(double totalPrice) {
         this.totalPrice = totalPrice;
     }
+    public long getCustomerId() {
+        return customerId;
+    }
+    public void setCustomerId(long customerId) {
+        this.customerId = customerId;
+    }
+    public long getRestaurantId() {
+        return restaurantId;
+    }
+    public void setRestaurantId(long restaurantId) {
+        this.restaurantId = restaurantId;
+    }
+    public long getItemId() {
+        return itemId;
+    }
+    public void setItemId(long itemId) {
+        this.itemId = itemId;
+    }
+    
+   
+    
+   
 }

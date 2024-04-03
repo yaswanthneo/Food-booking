@@ -36,14 +36,14 @@ public class CustomerController {
     //Register the customer details 
     public ResponseEntity<Customer> addCustomer(@RequestBody Customer customer) {
         Customer createdCustomer=customersService.addCustomer(customer);
-        return new ResponseEntity<Customer>(createdCustomer, HttpStatus.CREATED);
+        return new ResponseEntity<>(createdCustomer, HttpStatus.CREATED);
     }
 
     @GetMapping
     @Secured("ROLE_ADMIN")
-    //Get all the customers registered in the application
+    //View all the customers registered in the application
     public ResponseEntity<List<Customer>> getAllCustomers() {
-        return new ResponseEntity<>(customersService.getAllCustomers(), HttpStatus.OK);
+        return new ResponseEntity<>(customersService.getAllCustomers(), HttpStatus.FOUND);
     }
 
     @GetMapping("/{id}")
@@ -52,7 +52,7 @@ public class CustomerController {
     public ResponseEntity<Customer> getCustomerById(@PathVariable Long id) {
         Customer customer=customersService.getCustomerById(id);
         if(customer!=null){
-            return new ResponseEntity<>(customer, HttpStatus.OK);
+            return new ResponseEntity<>(customer, HttpStatus.FOUND);
         }else{
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -63,7 +63,7 @@ public class CustomerController {
     @Secured("ROLE_CUSTOMER")
     //Update the customer details
     public ResponseEntity<Customer> updateCustomer(@PathVariable Long id, @RequestBody Customer customer) {
-        customer.setId(id);
+        customer.setCustomerId(id);
         Customer updatedCustomer=customersService.updateCustomer(customer);
         if(updatedCustomer!=null){
             return new ResponseEntity<>(updatedCustomer, HttpStatus.OK);
